@@ -1,0 +1,23 @@
+{
+  "name": "asunabot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.5.0",
+    "@napi-rs/canvas": "^0.1.38",
+    "discord-api-types": "^0.37.35",
+    "discord-builders": "^1.0.0",
+    "discord-player": "^6.1.0",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.1",
+    "util": "^0.12.5"
+  }
+}
