@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, ChannelType, PermissionFlagsBits } = require('discord.js')
+const { mongoose } = require("mongoose")
 const Guild = require("../../schemas/guild")
 
 module.exports = {
@@ -41,13 +42,17 @@ module.exports = {
         let guild = await Guild.findOne({ guildId: interaction.guild.id })
 
         if(!guild) {
-            Guild.create({
+            guild = await new Guild({
+                _id: new mongoose.Types.ObjectId(),
                 guildId: interaction.guild.id,
-            })
+                guildWelcomeChannel: null,
+                guildLeaveChannel: null,
+                guildWelcomeRole: null
+            }).save()
         }
 
         if(interaction.options.getSubcommand() === "welcome_channel") {
-            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id, guildWelcomeChannel: interaction.options.getChannel("channel")})
+            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id },{ guildWelcomeChannel: interaction.options.getChannel("channel" )})
 
             return interaction.reply({
                 content: `Set welcome channel to ${interaction.options.getChannel("channel")}`
@@ -55,7 +60,7 @@ module.exports = {
         }
 
         if(interaction.options.getSubcommand() === "leave_channel") {
-            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id, guildLeaveChannel: interaction.options.getChannel("channel")})
+            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id },{ guildLeaveChannel: interaction.options.getChannel("channel") })
 
             return interaction.reply({
                 content: `Set leave channel to ${interaction.options.getChannel("channel")}`
@@ -63,7 +68,7 @@ module.exports = {
         }
 
         if(interaction.options.getSubcommand() === "welcome_role") {
-            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id, guildWelcomeRole: interaction.options.getRole("role")})
+            guild = await Guild.findOneAndUpdate({ guildId: interaction.guild.id },{ guildWelcomeRole: interaction.options.getRole("role") })
 
             return interaction.reply({
                 content: `Set welcome role to ${interaction.options.getRole("role")}`
